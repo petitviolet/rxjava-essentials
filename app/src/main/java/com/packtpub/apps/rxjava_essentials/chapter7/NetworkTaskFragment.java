@@ -8,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.packtpub.apps.rxjava_essentials.App;
 import com.packtpub.apps.rxjava_essentials.R;
 import com.rey.material.widget.Button;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +21,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -30,9 +33,9 @@ import rx.subjects.PublishSubject;
 
 public class NetworkTaskFragment extends Fragment {
 
-  @InjectView(R.id.arc_progress) ArcProgress mArcProgress;
+  @Bind(R.id.arc_progress) ArcProgress mArcProgress;
 
-  @InjectView(R.id.button_download) Button mButton;
+  @Bind(R.id.button_download) Button mButton;
 
   private PublishSubject<Integer> mDownloadProgress = PublishSubject.create();
 
@@ -43,7 +46,7 @@ public class NetworkTaskFragment extends Fragment {
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ButterKnife.inject(this, view);
+    ButterKnife.bind(this, view);
   }
 
   @OnClick(R.id.button_download) void download() {
@@ -163,6 +166,6 @@ public class NetworkTaskFragment extends Fragment {
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.reset(this);
+    ButterKnife.unbind(this);
   }
 }

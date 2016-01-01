@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import com.packtpub.apps.rxjava_essentials.App;
 import com.packtpub.apps.rxjava_essentials.R;
 import com.packtpub.apps.rxjava_essentials.chapter8.api.stackexchange.SeApiManager;
@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class SoActivity extends ActionBarActivity
     implements SoAdapter.ViewHolder.OpenProfileListener {
 
-  @InjectView(R.id.so_recyclerview) RecyclerView mRecyclerView;
+  @Bind(R.id.so_recyclerview) RecyclerView mRecyclerView;
 
-  @InjectView(R.id.so_swipe) SwipeRefreshLayout mSwipe;
+  @Bind(R.id.so_swipe) SwipeRefreshLayout mSwipe;
 
   private SoAdapter mAdapter;
 
@@ -31,7 +31,7 @@ public class SoActivity extends ActionBarActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_so);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     mAdapter = new SoAdapter(new ArrayList<>());
     mAdapter.setOpenProfileListener(this);

@@ -3,22 +3,25 @@ package com.packtpub.apps.rxjava_essentials.apps;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Data @Accessors(prefix = "m") public class AppInfo implements Comparable<Object> {
+@Data
+@Accessors(prefix = "m")
+public class AppInfo implements Comparable<Object> {
 
-  long mLastUpdateTime;
+    long mLastUpdateTime;
 
-  String mName;
+    String mName;
 
-  String mIcon;
+    String mIcon;
 
-  public AppInfo(String name, String icon, long lastUpdateTime) {
-    mName = name;
-    mIcon = icon;
-    mLastUpdateTime = lastUpdateTime;
-  }
+    public AppInfo(String name, String icon, long lastUpdateTime) {
+        mName = name;
+        mIcon = icon;
+        mLastUpdateTime = lastUpdateTime;
+    }
 
-  @Override public int compareTo(Object another) {
-    AppInfo f = (AppInfo) another;
-    return getName().compareTo(f.getName());
-  }
+    @Override
+    public int compareTo(Object another) {
+        AppInfo f = (AppInfo) another;
+        return getName().compareTo(f.getName());
+    }
 }

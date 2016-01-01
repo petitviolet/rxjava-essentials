@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
+import com.jakewharton.rxbinding.view.RxView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -17,15 +17,19 @@ import com.packtpub.apps.rxjava_essentials.R;
 import com.packtpub.apps.rxjava_essentials.chapter8.api.openweathermap.OpenWeatherMapApiManager;
 import com.packtpub.apps.rxjava_essentials.chapter8.api.openweathermap.models.WeatherResponse;
 import com.packtpub.apps.rxjava_essentials.chapter8.api.stackexchange.models.User;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.android.view.ViewObservable;
 import rx.schedulers.Schedulers;
 
-import static rx.android.internal.Preconditions.checkNotNull;
+import static com.jakewharton.rxbinding.internal.Preconditions.checkNotNull;
+
 
 public class SoAdapter extends RecyclerView.Adapter<SoAdapter.ViewHolder> {
 
@@ -67,19 +71,19 @@ public class SoAdapter extends RecyclerView.Adapter<SoAdapter.ViewHolder> {
 
     private final View mView;
 
-    @InjectView(R.id.name) TextView name;
+    @Bind(R.id.name) TextView name;
 
-    @InjectView(R.id.city) TextView city;
+    @Bind(R.id.city) TextView city;
 
-    @InjectView(R.id.reputation) TextView reputation;
+    @Bind(R.id.reputation) TextView reputation;
 
-    @InjectView(R.id.user_image) ImageView user_image;
+    @Bind(R.id.user_image) ImageView user_image;
 
-    @InjectView(R.id.city_image) ImageView city_image;
+    @Bind(R.id.city_image) ImageView city_image;
 
     public ViewHolder(View view) {
       super(view);
-      ButterKnife.inject(this, view);
+      ButterKnife.bind(this, view);
       mView = view;
     }
 
@@ -115,7 +119,7 @@ public class SoAdapter extends RecyclerView.Adapter<SoAdapter.ViewHolder> {
 
       displayWeatherInfos(user);
 
-      ViewObservable.clicks(mView).subscribe(onClickEvent -> {
+      RxView.clicks(mView).subscribe(onClickEvent -> {
         checkNotNull(mProfileListener, "Must implement OpenProfileListener");
 
         String url = user.getWebsiteUrl();
@@ -187,7 +191,7 @@ public class SoAdapter extends RecyclerView.Adapter<SoAdapter.ViewHolder> {
 
     public interface OpenProfileListener {
 
-      public void open(String url);
+      void open(String url);
     }
   }
 }

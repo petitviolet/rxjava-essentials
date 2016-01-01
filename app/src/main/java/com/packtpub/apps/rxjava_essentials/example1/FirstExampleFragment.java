@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.packtpub.apps.rxjava_essentials.App;
@@ -37,8 +37,8 @@ import rx.schedulers.Schedulers;
 
 public class FirstExampleFragment extends Fragment {
 
-  @InjectView(R.id.fragment_first_example_list) RecyclerView mRecyclerView;
-  @InjectView(R.id.fragment_first_example_swipe_container) SwipeRefreshLayout mSwipeRefreshLayout;
+  @Bind(R.id.fragment_first_example_list) RecyclerView mRecyclerView;
+  @Bind(R.id.fragment_first_example_swipe_container) SwipeRefreshLayout mSwipeRefreshLayout;
 
   private ApplicationAdapter mAdapter;
   private File mFilesDir;
@@ -52,7 +52,7 @@ public class FirstExampleFragment extends Fragment {
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ButterKnife.inject(this, view);
+    ButterKnife.bind(this, view);
 
     mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -147,6 +147,6 @@ public class FirstExampleFragment extends Fragment {
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.reset(this);
+    ButterKnife.unbind(this);
   }
 }
