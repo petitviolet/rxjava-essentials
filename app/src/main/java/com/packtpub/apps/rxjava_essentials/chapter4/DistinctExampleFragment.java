@@ -18,11 +18,16 @@ import com.packtpub.apps.rxjava_essentials.apps.ApplicationsList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.observables.ConnectableObservable;
+import rx.schedulers.Schedulers;
 
 public class DistinctExampleFragment extends Fragment {
 
@@ -70,15 +75,12 @@ public class DistinctExampleFragment extends Fragment {
         loadList(apps);
     }
 
-    private void loadList(List<AppInfo> apps) {
-        mRecyclerView.setVisibility(View.VISIBLE);
-
-        Observable<AppInfo> fullOfDuplicates = Observable.from(apps).take(3).repeat(3);
-
-        fullOfDuplicates.distinct().subscribe(new Observer<AppInfo>() {
+    private Observer<AppInfo> createObserver() {
+        return new Observer<AppInfo>() {
             @Override
             public void onCompleted() {
                 mSwipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getActivity(), "complete", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -92,6 +94,29 @@ public class DistinctExampleFragment extends Fragment {
                 mAddedApps.add(appInfo);
                 mAdapter.addApplication(mAddedApps.size() - 1, appInfo);
             }
-        });
+        };
+    }
+
+    private void loadList(List<AppInfo> apps) {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        final Observable<AppInfo> observable = Observable.from(apps)
+                .take(3)
+                .publish()
+//                .refCount()
+        ;
+
+        observable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(createObserver());
+
+        Schedulers.newThread().createWorker().schedule(() -> {
+            observable
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(createObserver());
+        }, 3, TimeUnit.SECONDS);
+
+        ((ConnectableObservable) observable).connect();
+
+//        Schedulers.newThread().createWorker().schedule(observable::connect, 3, TimeUnit.SECONDS);
     }
 }
