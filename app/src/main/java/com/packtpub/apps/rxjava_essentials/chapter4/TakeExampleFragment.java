@@ -20,6 +20,7 @@ import com.packtpub.apps.rxjava_essentials.apps.ApplicationsList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,7 +76,7 @@ public class TakeExampleFragment extends Fragment {
     private void loadList(List<AppInfo> apps) {
         mRecyclerView.setVisibility(View.VISIBLE);
 
-        Observable.from(apps).take(3).repeat(5).buffer(10).subscribe(new Observer<List<AppInfo>>() {
+        Observable.from(apps).debounce(1, TimeUnit.SECONDS).take(3).repeat(5).buffer(10).subscribe(new Observer<List<AppInfo>>() {
             @Override
             public void onCompleted() {
                 mSwipeRefreshLayout.setRefreshing(false);
